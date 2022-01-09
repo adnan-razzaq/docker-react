@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  web:
+    # build docker image from current directory
+    build:
+      #where we want all files and folders to be pulled from
+      context: .
+      dockerfile: Dockerfile.dev
+
+    ports:
+      - "3000:3000"
+
+    volumes:
+      #do not map anything against nodemodules in container
+      - /app/node_modules
+      - ./:/app
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+
+  tests:
+    build:
+      #where we want all files and folders to be pulled from
+      context: .
+      dockerfile: Dockerfile.dev
+
+    command: ["npm", "run", "tests"]
